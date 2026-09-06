@@ -1,20 +1,24 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import OCRProcessor from './components/OCRProcessor';
-import './App.css'
-
-
-
+import Header from './components/Header';
+import Footer from './components/Footer';
+import { DEFAULT_LANGUAGE, LANGUAGES, getLanguageMeta, getUiText } from './i18n';
 
 function App() {
+  const [language, setLanguage] = useState(DEFAULT_LANGUAGE);
+  const text = getUiText(language);
+  const languageMeta = getLanguageMeta(language);
+
   return (
-   
-    <div className='min-h-screen  bg-gray-700 p-8 justify-center'>
-      <h1 className='text-4xl font-bold mb-6 text-center bg-gray-800 border rounded-2xl border-black'>MedDost-"Your Ai Medicine Identifier"</h1>
-      <h2 className='text-4xl bg-gray-500 rounded mb-4 font-bold text-center'><strong>Welcome Home</strong></h2>
-      <OCRProcessor/>
+    <div className='min-h-screen flex flex-col bg-slate-50 font-sans' dir={languageMeta.dir}>
+      <Header language={language} languages={LANGUAGES} onLanguageChange={setLanguage} text={text.header} />
+      <main className="flex-grow w-full pt-10 pb-20 px-4">
+        <OCRProcessor language={language} text={text} />
+      </main>
+      <Footer text={text.footer} />
     </div>
-    
-  )
+  );
 }
 
-export default App
+export default App;
+
